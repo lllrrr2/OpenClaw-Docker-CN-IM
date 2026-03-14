@@ -40,12 +40,11 @@ RUN apt-get update && \
     git config --system url."https://github.com/".insteadOf ssh://git@github.com/ && \
     # 更新 npm 并安装全局包
     npm install -g npm@latest && \
-    npm install -g openclaw@2026.3.12 opencode-ai@latest playwright playwright-extra puppeteer-extra-plugin-stealth @steipete/bird && \
-    # 安装 bun 和 qmd，并在失败时直接终止构建
+    npm install -g openclaw@2026.3.13 opencode-ai@latest playwright playwright-extra puppeteer-extra-plugin-stealth @steipete/bird && \
+    # 安装 bun、uv 和 qmd
     curl -fsSL https://bun.sh/install | BUN_INSTALL=/usr/local bash && \
-    /usr/local/bin/bun install -g @tobilu/qmd && \
-    command -v qmd >/dev/null 2>&1 && \
-    qmd --version >/dev/null 2>&1 && \
+    curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR=/usr/local/bin sh && \
+    npm install -g @tobilu/qmd@1.1.6 && \
     # 安装 Playwright 浏览器依赖
     npx playwright install chromium --with-deps && \
     # 清理 apt 缓存
